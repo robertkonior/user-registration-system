@@ -1,9 +1,8 @@
 package com.application.controller;
 
 import com.application.dto.UserDto;
+import com.application.exception.CustomErrorType;
 import com.application.repository.UserJpaRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/users")
 public class UserRegistrationController {
 
-    public static final Logger log = LoggerFactory.getLogger(UserRegistrationController.class);
     private UserJpaRepository userJpaRepository;
 
     @Autowired
@@ -27,13 +26,29 @@ public class UserRegistrationController {
     @GetMapping("/")
     public ResponseEntity<List<UserDto>> listAllUsers() {
         List<UserDto> users = userJpaRepository.findAll();
+        if (users.isEmpty()) {
+            return new ResponseEntity<List<UserDto>>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<List<UserDto>>(users, HttpStatus.OK);
     }
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> createUser(@RequestBody final UserDto user) {
+        if (userJpaRepository.findByName(user.getName()) != null) {
+            return new ResponseEntity<UserDto>(new CustomErrorType("Unable to create new user. A User with name "
+                    + user.getName() + " already exist."), HttpStatus.CONFLICT);
+        }
         userJpaRepository.save(user);
         return new ResponseEntity<UserDto>(user, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") final Long id) {
+        Optional<UserDto> user = userJpaRepository.findById(id);
+
+        return user.map(userDto -> new ResponseEntity<>(userDto, HttpStatus.OK)).
+                orElseGet(() -> new ResponseEntity<>(new CustomErrorType("User with id "
+                + id + " not found"), HttpStatus.NOT_FOUND));
     }
 
 }
