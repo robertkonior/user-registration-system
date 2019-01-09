@@ -6,6 +6,7 @@ public class CustomErrorType extends UserDto {
     private String errorMessage;
 
     public CustomErrorType(final String errorMessage) {
+        super();
         this.errorMessage = errorMessage;
     }
 

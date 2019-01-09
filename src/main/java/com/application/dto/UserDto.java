@@ -20,6 +20,16 @@ public class UserDto {
     @Column(name = "EMAIL")
     private String email;
 
+    public UserDto() {
+    }
+
+    public UserDto(Long id ,String name, String address, String email) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }

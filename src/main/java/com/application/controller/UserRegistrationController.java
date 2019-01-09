@@ -35,7 +35,8 @@ public class UserRegistrationController {
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> createUser(@RequestBody final UserDto user) {
         if (userJpaRepository.findByName(user.getName()) != null) {
-            return new ResponseEntity<UserDto>(new CustomErrorType("Unable to create new user. A User with name "
+            return new ResponseEntity<UserDto>
+                    (new CustomErrorType("Unable to create new user. A User with name "
                     + user.getName() + " already exist."), HttpStatus.CONFLICT);
         }
         userJpaRepository.save(user);
@@ -48,7 +49,34 @@ public class UserRegistrationController {
 
         return user.map(userDto -> new ResponseEntity<>(userDto, HttpStatus.OK)).
                 orElseGet(() -> new ResponseEntity<>(new CustomErrorType("User with id "
-                + id + " not found"), HttpStatus.NOT_FOUND));
+                        + id + " not found"), HttpStatus.NOT_FOUND));
     }
 
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") final Long id, final @RequestBody UserDto user) {
+        Optional<UserDto> currentUser = userJpaRepository.findById(id);
+
+        if (currentUser.isPresent()) {
+            userJpaRepository.saveAndFlush(new UserDto(id, user.getName(), user.getAddress(), user.getEmail()));
+            return new ResponseEntity<UserDto>(currentUser.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<UserDto>(
+                new CustomErrorType("Unable to upate. User with id " + id + " not found."),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDto> deleteUser(@PathVariable("id") final Long id) {
+        Optional<UserDto> user = userJpaRepository.findById(id);
+
+        if (user.isPresent()) {
+            userJpaRepository.deleteById(id);
+            return new ResponseEntity<UserDto>(new CustomErrorType("Deleted User with id "+ id + "."),
+                    HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<UserDto>
+                (new CustomErrorType("Unable to delete. User with id " + id + " not found."),
+                        HttpStatus.NOT_FOUND);
+    }
 }
