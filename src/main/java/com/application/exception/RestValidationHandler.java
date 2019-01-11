@@ -1,5 +1,8 @@
 package com.application.exception;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,9 +17,13 @@ import java.awt.TrayIcon.MessageType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @ControllerAdvice
 public class RestValidationHandler {
+
+    @Autowired
+    private MessageSource messageSource;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -27,7 +34,7 @@ public class RestValidationHandler {
         fErrorDetails.setError_timeStamp(new Date().getTime());
         fErrorDetails.setError_status(HttpStatus.BAD_REQUEST.value());
         fErrorDetails.setError_title("Field Validation Error");
-        fErrorDetails.setError_detail("Inut Field Validation Failed");
+        fErrorDetails.setError_detail("Input Field Validation Failed");
         fErrorDetails.setError_developer_Message(mNotValidException.getClass().getName());
         fErrorDetails.setError_path(request.getRequestURI());
 
@@ -50,9 +57,11 @@ public class RestValidationHandler {
     private FieldValidationError processFieldError(final FieldError error) {
         FieldValidationError fieldValidationError = new FieldValidationError();
         if (error != null) {
+            Locale currentlLocale = LocaleContextHolder.getLocale();
+            String msg = messageSource.getMessage(error.getDefaultMessage(),null,currentlLocale);
             fieldValidationError.setField(error.getField());
             fieldValidationError.setType(MessageType.ERROR);
-            fieldValidationError.setMessage(error.getDefaultMessage());
+            fieldValidationError.setMessage(msg);
         }
         return fieldValidationError;
     }
