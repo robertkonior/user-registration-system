@@ -2,12 +2,12 @@ var app = angular.module('userregistrationsystem', ['ngRoute', 'ngResource']);
 
 app.config(function ($routeProvider) {
     $routeProvider
-        .when('list-all-users', {
+        .when('/list-all-users', {
             templateUrl: '/template/listuser.html',
-            controller: 'listUSerController'
+            controller: 'listUserController'
         })
-        .when('register-new-user', {
-            template: '/template/userregistartion.html',
+        .when('/register-new-user', {
+            templateUrl : '/template/userregistration.html',
             controller: 'registrationUserController'
         })
         .when('/update-user/:id', {
@@ -17,5 +17,5 @@ app.config(function ($routeProvider) {
         .otherwise({
             redirectTo: '/home',
             templateUrl: '/template/home.html'
-        })
-})
+        });
+});
