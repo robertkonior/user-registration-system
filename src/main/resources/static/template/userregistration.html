@@ -8,49 +8,51 @@
             <p>Please maintain uniqueness of User-Name</p>
         </div>
         <div class="panel-body">
-            <form ng-submit="submitUserForm()" name="myForm" class="form-horizontal">
-                <div class="row">
-                    <div class="form-group col-md12">
-                        <label class="col-md-2 control-label" for="uname">
-                            Name
-                        </label>
-                        <div class="col-md7">
-                            <input type="text" ng-model="user.name" id="uname" class="form-control input-sm"
-                                   placeholder="Enter user name" />
+            <div class="container">
+                <form ng-submit="submitUserForm()" name="myForm" class="form-horizontal">
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-label" for="uname">
+                                Name
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" ng-model="user.name" id="uname" class="form-control input-sm"
+                                       placeholder="Enter User Name."/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-label" for="address">
-                            Address
-                        </label>
-                        <div class="col-md-7">
-                            <input type="text" ng-model="user.address" id="address" class="form-control input-sm"
-                                   placeholder="Enter User Address" />
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-label" for="address">
+                                Address
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" ng-model="user.address" id="address" class="form-control input-sm"
+                                       placeholder="Enter User Address."/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md12">
-                        <label class="col-md-2 control-label" for="email">
-                            Email
-                        </label>
-                        <div class="col-md-7">
-                            <input type="email" ng-model="user.email" id="email" class="form-control input-sm"
-                                   placeholder="Enter User Email" />
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-label" for="email">
+                                Email
+                            </label>
+                            <div class="col-md-7">
+                                <input type="email" ng-model="user.email" id="email" class="form-control input-sm"
+                                       placeholder="Enter User Email"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-actions floatRight">
-                        <input type="submit" value="Register User" class="btn btn-primary btn-sm">
-                        <button type="button" ng-click="resetForm()" class="btn btn-warning btn-sm">
-                            Reset Form
-                        </button>
+                    <div class="row">
+                        <div class="form-actions floatRight">
+                            <input type="submit" value="Register User" class="btn btn-primary btn-sm">
+                            <button type="button" ng-click="resetForm()" class="btn btn-warning btn-sm">
+                                Reset Form
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
