@@ -14,8 +14,9 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-2 control-label" for="uname"> Name </label>
                             <div class="col-md-7">
-                                <input type="text" ng-model="user.name" id="uname" class="form-control input-sm"
-                                       placeholder="Enter User Name."/>
+                                <input type="text" minlength="1" ng-model="user.name" id="uname"
+                                       class="form-control input-sm"
+                                       placeholder="Enter User Name." required/>
                             </div>
                         </div>
                     </div>
@@ -23,8 +24,9 @@
                         <div class="form-group col-md-12">
                             <label class="col-md-2 control-label" for="address">Address</label>
                             <div class="col-md-7">
-                                <input type="text" ng-model="user.address" id="address" class="form-control input-sm"
-                                       placeholder="Enter User Address."/>
+                                <input type="text" minlength="4" ng-model="user.address" id="address"
+                                       class="form-control input-sm"
+                                       placeholder="Enter User Address." required/>
                             </div>
                         </div>
                     </div>
