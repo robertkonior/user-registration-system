@@ -28,7 +28,7 @@ app.controller('listUserController', function ($scope, $http, $location, $route)
     });
 
     $scope.editUser = function (userId) {
-        $location.path("/update-users/" + userId);
+        $location.path("/update-user/" + userId);
     };
 
     $scope.deleteUser = function (userId) {
@@ -43,3 +43,28 @@ app.controller('listUserController', function ($scope, $http, $location, $route)
     }
 });
 
+app.controller('userDetailsController', function ($scope, $http, $location, $routeParams, $route, $window) {
+    $scope.userId = $routeParams.id;
+
+    $http({
+        method: 'GET',
+        url: 'http://localhost:8080/api/users/' + $scope.userId
+    }).then(function (response) {
+        $scope.user = response.data;
+    });
+
+    $scope.submitUserForm = function () {
+        $http({
+            method: 'PUT',
+            url:  'http://localhost:8080/api/users/' + $scope.userId,
+            data: $scope.user
+        }).then(  function () {
+                $window.alert("User updated successfully");
+                $location.path("list-all-users");
+                $route.reload();
+            },  function (errResponse) {
+                $scope.errorMessage = "Error while updating User - Error Message: "
+                    + errResponse.data.errorMessage;
+            });
+    };
+});
