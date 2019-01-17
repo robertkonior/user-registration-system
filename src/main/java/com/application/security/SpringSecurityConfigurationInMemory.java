@@ -23,7 +23,7 @@ public class SpringSecurityConfigurationInMemory extends WebSecurityConfigurerAd
         auth.inMemoryAuthentication().withUser("user").
                 password(passwordEncoder().encode("password")).roles("USER");
         auth.inMemoryAuthentication().withUser("admin").
-                password("password").roles("USER", "ADMIN");
+                password(passwordEncoder().encode("password")).roles("USER", "ADMIN");
     }
 
     @Override
