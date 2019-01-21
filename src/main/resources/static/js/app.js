@@ -20,11 +20,11 @@ app.config(function ($routeProvider) {
         })
         .when('/login', {
             templateUrl: '/template/login.html',
-            controller: 'userDetailsController'
+            controller: 'loginController'
         })
         .when('/logout', {
             templateUrl: '/template/logout.html',
-            controller: 'userDetailsController'
+            controller: 'logoutController'
         })
         .otherwise({
             redirectTo: '/login'
@@ -32,5 +32,5 @@ app.config(function ($routeProvider) {
 });
 
 app.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.defaults.headers.common["X-Request-With"] = 'XMLHttpRequest';
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }]);
