@@ -19,3 +19,7 @@ app.config(function ($routeProvider) {
             templateUrl: '/template/home.html'
         });
 });
+
+app.config(['$httpProvider',function ($httpProvider) {
+    $httpProvider.interceptors.push('AuthInterceptor');
+}]);
