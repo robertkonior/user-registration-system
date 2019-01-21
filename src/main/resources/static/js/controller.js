@@ -56,16 +56,16 @@ app.controller('userDetailsController', function ($scope, $http, $location, $rou
     $scope.submitUserForm = function () {
         $http({
             method: 'PUT',
-            url:  'http://localhost:8080/api/users/' + $scope.userId,
+            url: 'http://localhost:8080/api/users/' + $scope.userId,
             data: $scope.user
-        }).then(  function () {
-                $window.alert("User updated successfully");
-                $location.path("list-all-users");
-                $route.reload();
-            },  function (errResponse) {
-                $scope.errorMessage = "Error while updating User - Error Message: "
-                    + errResponse.data.errorMessage;
-            });
+        }).then(function () {
+            $window.alert("User updated successfully");
+            $location.path("list-all-users");
+            $route.reload();
+        }, function (errResponse) {
+            $scope.errorMessage = "Error while updating User - Error Message: "
+                + errResponse.data.errorMessage;
+        });
     };
 });
 
@@ -80,4 +80,43 @@ app.controller('homeController', function ($rootScope, $scope, $http, $location,
     }
 });
 
+app.controller('loginController', function ($rootScope, $scope, $http, $location, $route) {
+    $scope.credentials = {};
 
+    $scope.resetForm = function () {
+        $scope.credentials = null;
+    };
+    var authenticate = function (credentials, callback) {
+        var headers = $scope.credentials ? {
+            authorization: "Basic" +
+                btoa($scope.credentials.username + ":" + $scope.credentials.password)
+        } : {};
+
+        $http.get('user', {
+            headers: headers
+        }).then(function (response) {
+            if (response.data.name) {
+                $rootScope.authenticated = true;
+            } else {
+                $rootScope.authenticated = false;
+            }
+            callback && callback();
+        }, function () {
+            $rootScope.authenticated = false;
+            callback && callback();
+        });
+    };
+    authenticate();
+
+    $scope.loginUser = function () {
+        authenticate($scope.credentials, function () {
+            if ($rootScope.authenticated) {
+                $location.path("/");
+                $scope.loginerror = false;
+            } else {
+                $location.path("/login");
+                $scope.loginerror = true;
+            }
+        })
+    }
+});
