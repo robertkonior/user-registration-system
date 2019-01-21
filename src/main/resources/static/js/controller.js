@@ -68,3 +68,16 @@ app.controller('userDetailsController', function ($scope, $http, $location, $rou
             });
     };
 });
+
+app.controller('homeController', function ($rootScope, $scope, $http, $location, $route) {
+
+    if ($rootScope.authenticated) {
+        $location.path("/");
+        $scope.loginerror = false;
+    } else {
+        $location.path("/login");
+        $scope.loginerror = true;
+    }
+});
+
+
