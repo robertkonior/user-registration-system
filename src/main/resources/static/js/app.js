@@ -6,20 +6,31 @@ app.config(function ($routeProvider) {
             templateUrl: '/template/listuser.html',
             controller: 'listUserController'
         })
+        .when('/', {
+            templateUrl: '/template/home.html',
+            controller: 'homeController'
+        })
         .when('/register-new-user', {
-            templateUrl : '/template/userregistration.html',
+            templateUrl: '/template/userregistration.html',
             controller: 'registrationUserController'
         })
         .when('/update-user/:id', {
             templateUrl: '/template/userupdation.html',
             controller: 'userDetailsController'
         })
+        .when('/login', {
+            templateUrl: '/template/login.html',
+            controller: 'userDetailsController'
+        })
+        .when('/logout', {
+            templateUrl: '/template/logout.html',
+            controller: 'userDetailsController'
+        })
         .otherwise({
-            redirectTo: '/home',
-            templateUrl: '/template/home.html'
+            redirectTo: '/login'
         });
 });
 
-app.config(['$httpProvider',function ($httpProvider) {
-    $httpProvider.interceptors.push('AuthInterceptor');
+app.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.defaults.headers.common["X-Request-With"] = 'XMLHttpRequest';
 }]);
