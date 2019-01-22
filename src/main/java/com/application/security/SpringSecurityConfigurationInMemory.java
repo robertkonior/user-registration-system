@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SpringSecurityConfigurationInMemory extends WebSecurityConfigurerAdapter {
@@ -28,11 +29,13 @@ public class SpringSecurityConfigurationInMemory extends WebSecurityConfigurerAd
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/users/").hasRole("USER")
-                .antMatchers(HttpMethod.POST,"/api/users/").hasRole("USER")
-                .antMatchers(HttpMethod.PUT,"/api/users/**").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
-                .and().csrf().disable();
+        http.httpBasic().realmName("User Registration System").and()
+                .authorizeRequests()
+                .antMatchers("/template/login.html", "/template/home.html", "/")
+                .permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
 }
