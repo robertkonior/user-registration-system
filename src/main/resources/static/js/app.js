@@ -23,7 +23,7 @@ app.config(function ($routeProvider) {
             controller: 'loginController'
         })
         .when('/logout', {
-            templateUrl: '/template/logout.html',
+            templateUrl: '/template/login.html',
             controller: 'logoutController'
         })
         .otherwise({
