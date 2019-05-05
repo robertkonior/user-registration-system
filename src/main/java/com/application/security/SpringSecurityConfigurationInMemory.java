@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,11 +34,18 @@ public class SpringSecurityConfigurationInMemory extends WebSecurityConfigurerAd
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().realmName("User Registration System").and()
                 .authorizeRequests()
-                .antMatchers("/template/login.html", "/template/home.html", "/")
+                .antMatchers("/template/login.html", "/template/home.html", "/index.html", "/")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/static/**", "/css/**", "/js/**", "/images/**");
     }
 }
